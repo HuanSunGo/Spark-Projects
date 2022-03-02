@@ -3,7 +3,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md ##### Read Dataset from S3
+# MAGIC %md Read Dataset from S3
 
 # COMMAND ----------
 
@@ -12,7 +12,13 @@ from pyspark.sql.types import IntegerType
 
 # COMMAND ----------
 
-df_laptimes=spark.read.csv("s3://columbia-gr5069-main/raw/lap_times.csv",header=True)   # copy the S3 URL, allow Spark retrieve data
+df_laptimes=spark.read.csv("s3://columbia-gr5069-main/raw/lap_times.csv",header=True,inferSchema=True)   
+# copy the S3 URL, allow Spark retrieve data
+
+# COMMAND ----------
+
+# MAGIC %md Check the schema of dataframe, not desirable types of having all strings. --> `inferSchema` to automatically choose the datatype.
+# MAGIC Otherwise should `cast` manually.
 
 # COMMAND ----------
 
@@ -20,11 +26,35 @@ display(df_laptimes)
 
 # COMMAND ----------
 
-df_driver=spark.read.csv("s3://columbia-gr5069-main/raw/drivers.csv",header=True)  
+df_driver=spark.read.csv("s3://columbia-gr5069-main/raw/drivers.csv",header=True,inferSchema=True)  
+display(df_driver)
 
 # COMMAND ----------
 
-display(df_driver)
+# check why that the `number` column is STRING. --> because there's `\N` in the column, and counts for 804 values.
+display(df_driver.groupby('number').count())
+
+# COMMAND ----------
+
+df_driver_count=df_driver.select('driverId').count()
+df_driver_count
+
+# COMMAND ----------
+
+df_driver.count()
+
+# COMMAND ----------
+
+df_driver_count=df_driver.select('driverId').distinct().count()
+df_driver_count
+
+# COMMAND ----------
+
+# MAGIC %md The previous 3 steps shows that `drivers` is clean.
+
+# COMMAND ----------
+
+# MAGIC %md ### 02-23-2022 Class 6
 
 # COMMAND ----------
 
@@ -70,3 +100,11 @@ display(df_lap_drivers)
 # COMMAND ----------
 
 df_lap_drivers.write.csv("s3://hs-gr5069/processed/in_class_workshop/drivers_laptimes.csv")
+
+# COMMAND ----------
+
+# MAGIC %md ### 03-02-2022 Class 7
+
+# COMMAND ----------
+
+
