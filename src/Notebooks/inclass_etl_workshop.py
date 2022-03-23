@@ -103,7 +103,8 @@ df_lap_drivers.write.csv("s3://hs-gr5069/processed/in_class_workshop/drivers_lap
 
 # COMMAND ----------
 
-# MAGIC %md ### 03-02-2022 Class 7
+# MAGIC %md ### 03-09-2022 Class 8
+# MAGIC ML Flow in databricks
 
 # COMMAND ----------
 
