@@ -103,8 +103,59 @@ df_lap_drivers.write.csv("s3://hs-gr5069/processed/in_class_workshop/drivers_lap
 
 # COMMAND ----------
 
-# MAGIC %md ### 03-09-2022 Class 8
-# MAGIC ML Flow in databricks
+# MAGIC %md ### 03-30-2022 Class 10
+# MAGIC In class workshop 
+
+# COMMAND ----------
+
+import boto3 # use the data from s3
+import pandas as pd
+
+s3 = boto3.client('s3')
+
+bucket = "ne-gr5069"
+airbnb_data = "raw/sf-listings/airbnb-cleaned-mlflow.csv"
+
+obj_laps = s3.get_object(Bucket= bucket, Key= airbnb_data) 
+df = pd.read_csv(obj_laps['Body'])
+
+# COMMAND ----------
+
+display(df)
+
+# COMMAND ----------
+
+from io import StringIO # python3; python2: BytesIO 
+import boto3
+
+# load pandas file directly into S3 
+# previously was write spark df into S3 by using df.write.csv
+bucket = 'hs-gr5069' # already created on S3
+csv_buffer = StringIO()
+df.to_csv(csv_buffer)
+s3_resource = boto3.resource('s3')
+s3_resource.Object(bucket, 'df.csv').put(Body=csv_buffer.getvalue())
+
+# COMMAND ----------
+
+bucket = "hs-gr5069"
+airbnb_data = "df.csv"
+
+obj = s3.get_object(Bucket= bucket, Key= airbnb_data) 
+df_airbnb = pd.read_csv(obj['Body'])
+
+# COMMAND ----------
+
+display(df_airbnb)
+
+# COMMAND ----------
+
+df_airbnb=df_airbnb.drop(['_c0','Unnamed: 0'],axis=1)
+df_airbnb.head()
+
+# COMMAND ----------
+
+df_airbnb.columns
 
 # COMMAND ----------
 
