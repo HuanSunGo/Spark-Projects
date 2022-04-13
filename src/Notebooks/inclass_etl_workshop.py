@@ -130,6 +130,7 @@ import boto3
 
 # load pandas file directly into S3 
 # previously was write spark df into S3 by using df.write.csv
+
 bucket = 'hs-gr5069' # already created on S3
 csv_buffer = StringIO()
 df.to_csv(csv_buffer)
@@ -156,6 +157,42 @@ df_airbnb.head()
 # COMMAND ----------
 
 df_airbnb.columns
+
+# COMMAND ----------
+
+# MAGIC %md ### 04-06-2022 Class 11
+# MAGIC In class workshop 
+
+# COMMAND ----------
+
+# Data Science part, pull from the others s3 
+
+import boto3 # use the data from s3
+import pandas as pd
+
+s3 = boto3.client('s3')
+
+bucket = "sw-gr5069"
+airbnb_data = "ads_class_exercise_11_data_engineering.csv"
+
+# read the data in as pandas dataframe. 
+# But normally should read in as Spark, to use the distributed computation power. Now has the option of Koalas in Spark, which has the similar syntax to Pandas.
+
+obj_laps = s3.get_object(Bucket= bucket, Key= airbnb_data) 
+df_class11 = pd.read_csv(obj_laps['Body'])
+
+# COMMAND ----------
+
+df_class11.head()
+
+# COMMAND ----------
+
+df_class11=df.drop(columns=['Unnamed: 0','Unnamed: 0'])
+df_class11.columns
+
+# COMMAND ----------
+
+df_class11
 
 # COMMAND ----------
 

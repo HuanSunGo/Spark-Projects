@@ -206,4 +206,8 @@ log_rf(experimentID, "Third Run", params_1000_trees, X_train, X_test, y_train, y
 
 # COMMAND ----------
 
+# MAGIC %md ML flow example of Wine Classification
 
+# COMMAND ----------
+
+# use registray identifier, 
