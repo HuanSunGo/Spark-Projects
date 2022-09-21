@@ -1,3 +1,3 @@
-# Git-demo
+# Spark Projects 
 
-Place to exercise the git command. 
+Implemented over Databricks. 
